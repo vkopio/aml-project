@@ -13,6 +13,6 @@ train_data = pd.concat(
 train_target = np.array([1] * len(train_true) + [0] * len(train_fake))
 
 def cv(model, data, target):
-    scores = cross_val_score(model, data, target, cv=20)
+    scores = cross_val_score(model, data, target, cv=10)
 
     return scores.mean(), scores.std()
