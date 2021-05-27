@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import norm
 from sklearn.ensemble import AdaBoostClassifier
 
-from common import train_data, train_target, cv
+from common import train_data, train_target, cv, make_test_prediction
 
 x = np.linspace(0.6,1.2,1000)
 
@@ -17,3 +17,9 @@ for n in [10, 100, 1000]:
 
 plt.legend()
 plt.show()
+
+
+#model = AdaBoostClassifier(n_estimators=1000)
+#model.fit(train_data, train_target)
+
+#make_test_prediction(model, 'adaboost')

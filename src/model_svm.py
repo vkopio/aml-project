@@ -6,7 +6,7 @@ from sklearn import svm
 
 from common import train_data, train_target, cv
 
-svm_model = svm.NuSVC(gamma='auto')
+svm_model = svm.NuSVC(gamma='scale')
 
 cv_score = cv(svm_model, train_data, train_target)
 
