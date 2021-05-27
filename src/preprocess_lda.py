@@ -39,86 +39,24 @@ with open('../data/test.txt') as f:
     test = tokenize_document(f)
 
 
-counts = {}
-
-for title in fake:
-    for w in title:
-        counts[w] = counts.get(w, 0) + 1
-
-for title in true:
-    for w in title:
-        counts[w] = counts.get(w, 0) + 1
-
-# Create Dictionary
 id2word = corpora.Dictionary(true + fake)
-# Create Corpus
-# Term Document Frequency
+
 true_corpus = [id2word.doc2bow(text) for text in true]
 fake_corpus = [id2word.doc2bow(text) for text in fake]
 test_corpus = [id2word.doc2bow(text) for text in test]
 
-mallet_path = '../mallet-2.0.8/bin/mallet' 
+mallet_path = '../mallet-2.0.8/bin/mallet'
 
-num_topics = 32
-# Build LDA model
+num_topics = 210
+
 lda_model = gensim.models.wrappers.LdaMallet(
-    mallet_path, 
+    mallet_path,
+    alpha=1200,
     corpus=true_corpus + fake_corpus,
     id2word=id2word,
     num_topics=num_topics,
     random_seed=42)
 
-# def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
-#     coherence_values = []
-#     model_list = []
-
-#     for num_topics in range(start, limit, step):
-#         model = gensim.models.wrappers.LdaMallet(
-#             mallet_path, 
-#             corpus=corpus, 
-#             num_topics=num_topics, 
-#             id2word=id2word,
-#             random_seed=42)
-
-#         model_list.append(model)
-
-#         coherencemodel = CoherenceModel(
-#             model=model, 
-#             texts=texts, 
-#             dictionary=dictionary, 
-#             coherence='c_v')
-#         coherence_values.append(coherencemodel.get_coherence())
-
-#     return model_list, coherence_values
-
-# limit = 40
-# start = 8
-# step = 4
-
-# model_list, coherence_values = compute_coherence_values(
-#     dictionary=id2word, 
-#     corpus=true_corpus + fake_corpus, 
-#     texts=true + fake, 
-#     start=start, 
-#     limit=limit, 
-#     step=step)
-
-
-# x = range(start, limit, step)
-# plt.plot(x, coherence_values)
-# plt.xlabel("Num Topics")
-# plt.ylabel("Coherence score")
-# plt.legend(("coherence_values"), loc='best')
-# plt.show()
-
-
-cnt = 40
-
-# sort words by their total count
-# extract top 300 words
-# transform them into a word -> index hash map
-features = {x[0]: i for i, x in enumerate(
-    sorted(counts.items(), key=lambda kv: kv[1])[-cnt:])}
 
 with open('../data/lda/train_fake_lda.csv', 'w') as f:
     writer = csv.writer(f, delimiter=',')
@@ -141,7 +79,7 @@ with open('../data/lda/train_true_lda.csv', 'w') as f:
             csv_row[topic[0]] = topic[1]
 
         writer.writerow(csv_row)
-    
+
 
 with open('../data/lda/test_lda.csv', mode='w') as f:
     writer = csv.writer(f, delimiter=',')
