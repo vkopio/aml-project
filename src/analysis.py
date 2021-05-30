@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from sklearn.decomposition import PCA
-from common import train_data, train_target
+from common import train_data_bow as train_data, train_target
 
 
 pca = PCA(n_components=2)
@@ -17,7 +17,7 @@ principalDf = pd.DataFrame(
 
 principalDf['target'] = train_target
 
-sns.scatterplot(data=principalDf, x='pc1', y='pc2', hue='target', alpha=0.3)
+sns.scatterplot(data=principalDf, x='pc1', y='pc2', hue='target')
 plt.show()
 
 pca_full = PCA()
@@ -26,4 +26,10 @@ pca_full.fit_transform(train_data)
 plt.plot(np.cumsum(pca_full.explained_variance_ratio_))
 plt.xlabel('number of components')
 plt.ylabel('cumulative explained variance')
+plt.show()
+
+df = pd.DataFrame(data=train_data)
+df['target'] = train_target
+
+sns.heatmap(df.corr())
 plt.show()
