@@ -47,11 +47,12 @@ test_corpus = [id2word.doc2bow(text) for text in test]
 
 mallet_path = '../mallet-2.0.8/bin/mallet'
 
-num_topics = 210
+num_topics = 25 # determined by lda_parameters.py
 
 lda_model = gensim.models.wrappers.LdaMallet(
     mallet_path,
-    alpha=1200,
+    iterations=10000,
+    optimize_interval=10,
     corpus=true_corpus + fake_corpus,
     id2word=id2word,
     num_topics=num_topics,
@@ -59,6 +60,7 @@ lda_model = gensim.models.wrappers.LdaMallet(
 
 
 with open('../data/lda/train_fake_lda.csv', 'w') as f:
+    print('writing train_fake_lda.csv...')
     writer = csv.writer(f, delimiter=',')
 
     for row in lda_model[fake_corpus]:
@@ -69,7 +71,10 @@ with open('../data/lda/train_fake_lda.csv', 'w') as f:
 
         writer.writerow(csv_row)
 
+    print('done')
+
 with open('../data/lda/train_true_lda.csv', 'w') as f:
+    print('writing train_true_lda.csv...')
     writer = csv.writer(f, delimiter=',')
 
     for row in lda_model[true_corpus]:
@@ -80,8 +85,11 @@ with open('../data/lda/train_true_lda.csv', 'w') as f:
 
         writer.writerow(csv_row)
 
+    print('done')
+
 
 with open('../data/lda/test_lda.csv', mode='w') as f:
+    print('writing test_lda.csv...')
     writer = csv.writer(f, delimiter=',')
 
     for row in lda_model[test_corpus]:
@@ -91,4 +99,5 @@ with open('../data/lda/test_lda.csv', mode='w') as f:
             csv_row[topic[0]] = topic[1]
 
         writer.writerow(csv_row)
-        print(csv_row)
+
+    print('done')

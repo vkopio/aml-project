@@ -65,8 +65,8 @@ def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
 
     for num_topics in range(start, limit, step):
         model = gensim.models.wrappers.LdaMallet(
-            mallet_path, 
-            alpha=1200,
+            mallet_path,
+            optimize_interval=10,
             iterations=1000,
             corpus=corpus, 
             num_topics=num_topics, 
@@ -84,9 +84,9 @@ def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
 
     return model_list, coherence_values
 
-limit = 310
-start = 210
-step = 20
+limit = 210
+start = 20
+step = 10
 
 model_list, coherence_values = compute_coherence_values(
     dictionary=id2word, 
@@ -99,7 +99,7 @@ model_list, coherence_values = compute_coherence_values(
 
 x = range(start, limit, step)
 plt.plot(x, coherence_values)
-plt.xlabel("Num Topics")
+plt.xlabel("Number of Topics")
 plt.ylabel("Coherence score")
-plt.legend(("coherence_values"), loc='best')
+plt.legend(("coherence"), loc='best')
 plt.show()
