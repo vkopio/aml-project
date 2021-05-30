@@ -26,8 +26,8 @@ def cv(model, data, target):
     return scores.mean(), scores.std()
 
 
-def make_test_prediction(model, name):
-    pred = model.predict(test_data)
+def make_test_prediction(model, name, bow=False):
+    pred = model.predict(test_data_bow if bow else test_data)
 
     with open('../data/predictions/{}_prediction.csv'.format(name), mode='w') as f:
         writer = csv.writer(f, delimiter=',', quotechar='"',
