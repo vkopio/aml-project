@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import norm
 from sklearn.linear_model import LogisticRegression
 
-from common import train_data, train_target, cv, test_data
+from common import train_data, train_target, cv, test_data, make_test_prediction
 
 logistic_regression_model = LogisticRegression(random_state=42)
 
@@ -19,7 +19,7 @@ logistic_regression_model = LogisticRegression(random_state=42)
 
 logistic_regression_model.fit(train_data, train_target)
 
-print(logistic_regression_model.score(train_data, train_target))
+#print(logistic_regression_model.score(train_data, train_target))
 
 # pred = logistic_regression_model.predict(test_data)
 
@@ -33,3 +33,5 @@ print(logistic_regression_model.score(train_data, train_target))
 #     for i, p in enumerate(pred):
 #       writer.writerow([i + 1, p])
 #       print(i, p)
+
+make_test_prediction(logistic_regression_model, 'lda_logistic_regression')

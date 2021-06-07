@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 from sklearn.ensemble import GradientBoostingClassifier
 
-from common import train_data, train_target, cv, make_test_prediction
+from common import train_data_bow as train_data, train_target, cv, make_test_prediction
 
 # x = np.linspace(0.6,1.2,1000)
 
@@ -74,6 +74,7 @@ def modelfit(alg, performCV=True, printFeatureImportance=True, cv_folds=3):
 
 
 gbm = GradientBoostingClassifier(
+    loss='exponential',
     learning_rate=0.02,
     n_estimators=700,
     min_samples_split=1400,
@@ -83,25 +84,24 @@ gbm = GradientBoostingClassifier(
     subsample=0.8,
     random_state=42
 )
-#modelfit(gbm)
 
-#gbm.fit(train_data, train_target)
-#make_test_prediction(gbm, 'gradientboost_v2')
+gbm.fit(train_data, train_target)
+make_test_prediction(gbm, 'bow_gradientboost', bow=True)
 
-param_test1 = {'n_estimators': range(700,3000,300), 'learning_rate': [0.01, 0.02]}
+# param_test1 = {'n_estimators': range(700,3000,300), 'learning_rate': [0.01, 0.02]}
 
-gsearch1 = GridSearchCV(
-    estimator=gbm,
-    param_grid=param_test1,
-    scoring='accuracy',
-    n_jobs=4,
-    cv=5
-)
+# gsearch1 = GridSearchCV(
+#     estimator=gbm,
+#     param_grid=param_test1,
+#     scoring='accuracy',
+#     n_jobs=4,
+#     cv=5
+# )
 
-gsearch1.fit(train_data, train_target)
+# gsearch1.fit(train_data, train_target)
 
-print(gsearch1.cv_results_)
-print(gsearch1.best_params_)
-print(gsearch1.best_score_)
+# print(gsearch1.cv_results_)
+# print(gsearch1.best_params_)
+# print(gsearch1.best_score_)
 
 #cv_score = cv(gbm, train_data, train_target)
